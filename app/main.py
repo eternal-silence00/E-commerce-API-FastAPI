@@ -2,7 +2,9 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from app.routers import auth, orders, products
 from app.database import engine
-from app.models.user import Base
+from app.models.user import User, Base
+from app.models.product import Product
+from app.models.order import Order, OrderItem
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
