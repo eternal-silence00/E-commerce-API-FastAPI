@@ -9,7 +9,7 @@ class User(Base):
     __tablename__ = "users"
     
     id = Column(Integer, primary_key=True)
-    email = Column(String(50),nullable=False )
+    email = Column(String(50),nullable=False, unique=True )
     hashed_password = Column(String, nullable=False)
     is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
