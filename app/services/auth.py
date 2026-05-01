@@ -5,8 +5,8 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 import os
 from sqlalchemy.ext.asyncio import AsyncSession
-from database import get_db
-from repositories.user import UserRepository
+from app.database import get_db
+from app.repositories.user import UserRepository
 
 pwd_context = CryptContext(schemes=["bcrypt"])
 
