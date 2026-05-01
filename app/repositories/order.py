@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from app.models.order import Order, OrderItem
+from app.models.product import Product
 
 class OrderRepository:
     def __init__(self, session: AsyncSession):
@@ -12,11 +13,14 @@ class OrderRepository:
         await self.session.flush()
         
         for item in items:
+            product = await self.session.get(Product, item.product_id)
+            if not product:
+                raise ValueError(f"Product {item.product_id} not found")
             order_item = OrderItem(
                 order_id = order.id,
                 product_id = item.product_id,
                 quantity = item.quantity,
-                price = item.price
+                price = product.price
             )
             self.session.add(order_item)
             

@@ -28,7 +28,7 @@ async def get_products(
     repo = ProductRepository(session)
     result = await repo.get_all(category)
     
-    result_dict = [ProductResponse.model_validate(p).model_dump() for p in result]
+    result_dict = [ProductResponse.model_validate(p).model_dump(mode="json") for p in result]
     await redis_client.set(cache_key, json.dumps(result_dict), ex=300)
     
     return result_dict
@@ -47,7 +47,7 @@ async def get_product_by_id(
     if not result:
         raise HTTPException(status_code=404, detail="Product not found")
     
-    result_dict = ProductResponse.model_validate(result).model_dump()
+    result_dict = ProductResponse.model_validate(result).model_dump(mode='json')
     await redis_client.set(cache_key, json.dumps(result_dict), ex=300)
     
     return result_dict
