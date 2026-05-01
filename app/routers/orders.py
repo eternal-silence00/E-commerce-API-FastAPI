@@ -4,6 +4,7 @@ from app.database import get_db
 from app.repositories.order import OrderRepository
 from app.schemas.order import OrderCreate, OrderResponse
 from app.services.auth import get_current_user
+from app.tasks.email import send_order_confirmation
 
 router = APIRouter()
 
@@ -19,6 +20,9 @@ async def create_order(
         data.items,
         total=0
     )
+    
+    send_order_confirmation.delay(user.email, order.id)
+    
     return order
 
 @router.get("/orders")
